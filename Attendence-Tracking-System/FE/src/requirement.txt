@@ -1,0 +1,18 @@
+● Build an attendance tracking system using ReactJS or VueJS, and a NodeJS (using the Fastify 
+framework) backend, with a simple storage layer. The storage layer can be a simple database 
+like SQLite, a JSON file, or even a NoSQL database like MongoDB (running in a Docker 
+container) 
+
+● The back-end should simply store the name, email, image of the attendee, the current 
+timestamp and an indication of whether this is an ENTRY or EXIT attendance.  
+
+● The attendee’s image should be fetched using the device’s camera interface 
+● The interface should be fun and engaging. Feel free to customize it as you wish. 
+● If the attendee performs LOGIN (entry) then the system should only perform LOGOUT upon 
+their next encounter.  
+
+○ Perform image match on the person on entry and exit using any other recent 
+image-matching library. 
+
+● Your solution should be implemented and runnable in a Docker container. Provide the 
+Dockerfile in your repository
