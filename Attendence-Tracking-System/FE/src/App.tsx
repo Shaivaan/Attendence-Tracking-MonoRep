@@ -1,14 +1,18 @@
+import { Route, Routes } from 'react-router-dom'
 import './App.css'
-import { Button } from './components/shad-cn/button'
-import useToggleTheme from './hooks/useToggleTheme'
+import RandomRoute from './screens/FallBack/RandomRoute'
+import Dashboard from './screens/Dashbaord/Dashboard'
 
 function App() {
-  const toggleTheme = useToggleTheme();
 
   return (
-    <div className="flex min-h-svh flex-col items-center justify-center">
-        <Button onClick={toggleTheme} >Theme Toggle</Button>
-      </div>
+    <div>
+      <Routes>
+        <Route path='/' element={<Dashboard />}/>
+        <Route path='*' element={<RandomRoute/>}/>
+      </Routes>
+      
+    </div>
   )
 }
 

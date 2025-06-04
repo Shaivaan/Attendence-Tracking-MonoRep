@@ -25,9 +25,6 @@ body {
   background : var(--background);
   color: var(--text-color);
   margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
   min-height: 100vh;
 }
 
@@ -110,4 +107,11 @@ button:hover {
 button:focus,
 button:focus-visible {
     outline: 4px auto -webkit-focus-ring-color;
+}
+
+.flex-center-container{
+  display: flex;
+  height: 100dvh;
+  align-items: center;  
+  justify-content: center;
 }
