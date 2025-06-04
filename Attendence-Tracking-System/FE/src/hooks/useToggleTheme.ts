@@ -1,14 +1,14 @@
 import { useState } from "react";
 
   const useToggleTheme = () => {
-    const [isDarkTheme,setIsDarkTheme] = useState(false);
+    const [isLightTheme,setIsLightTheme] = useState(false);
     const toggleTheme = ()=>{
-        const newIsDark = !isDarkTheme;
-        setIsDarkTheme(newIsDark);
-        if (newIsDark) document.documentElement.classList.add('dark'); 
-        else document.documentElement.classList.remove('dark');
+        const newIsDark = !isLightTheme;
+        setIsLightTheme(newIsDark);
+        if (newIsDark) document.documentElement.classList.add('light'); 
+        else document.documentElement.classList.remove('light');
     }
-    return toggleTheme;
+    return {toggleTheme, isLightTheme};
   };
 
   export default useToggleTheme;
