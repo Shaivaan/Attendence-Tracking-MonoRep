@@ -1,16 +1,16 @@
 import express from 'express';
 import cors from 'cors';
-// import attendanceRoutes from './routes/attendanceRoutes';
+import entryRouter from './routes/entryRoutes';
 
 const app = express();
-
+app.use('/uploads', express.static('uploads'));
 // Middleware
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Routes
-// app.use('/api/attendance', attendanceRoutes);
+app.use('/entry', entryRouter);
 
 app.get('/health', (req, res) => {
   res.json({ 
