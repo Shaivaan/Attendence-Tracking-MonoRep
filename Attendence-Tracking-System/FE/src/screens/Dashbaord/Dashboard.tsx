@@ -2,7 +2,8 @@ import { Calendar, Camera, CircleArrowOutDownLeft, CircleCheckBig, Users } from 
 import Card from "../../components/created/Card";
 import { memo, useMemo } from "react";
 import useZustandStore, { statsLabel } from "../../zustand/store";
-import { cn } from "../../lib/utils";
+import { cn, routes } from "../../lib/utils";
+import { Link } from "react-router-dom";
 
 const Dashboard = ()=>{
     const keys = Object.keys(statsLabel);
@@ -37,12 +38,14 @@ const CardIconHandler=({cardType}:CountCardType)=>{
 const MarkAttendenceCard=({isMarkAttendence=false}:IsMarkAttendenceType)=>{
     const label1 = useMemo(()=>isMarkAttendence ? 'Mark Attendence' : 'View History',[isMarkAttendence]);
     const label2 = useMemo(()=>isMarkAttendence ? 'Capture photo and record entry/exit' : 'Check attendence records',[isMarkAttendence]);
-    return <div className="w-full flex flex-col gap-2 items-center">
-        {isMarkAttendence ? <Camera className="size-10"/> : <Calendar className="size-10"/>}
-        
-        <div className="font-medium text-[1.2rem] w-full text-center">{label1}</div>
-        <div>{label2}</div>
-    </div>
+    const navigateLink = useMemo(()=>isMarkAttendence ? routes.mark : null,[isMarkAttendence]);
+    return <Link to={navigateLink as string} >
+        <div className="w-full flex flex-col gap-2 items-center">
+            {isMarkAttendence ? <Camera className="size-10"/> : <Calendar className="size-10"/>}
+            <div className="font-medium text-[1.2rem] w-full text-center">{label1}</div>
+            <div>{label2}</div>
+        </div>
+    </Link>
 }
 
 
