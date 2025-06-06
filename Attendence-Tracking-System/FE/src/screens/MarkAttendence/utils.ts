@@ -15,4 +15,11 @@ const validationSchema = Yup.object().shape({
   email: Yup.string().nullable().required('Email is required').email('Invalid email format').trim().matches(/^(?!\s*$).+/, 'Email cannot be only spaces'),
 });
 
-export {initialValues, validationSchema}
+
+async function urlToFile(url:string, filename = 'photo.jpg') {
+  const response = await fetch(url);
+  const blob = await response.blob();
+  return new File([blob], filename, { type: blob.type || 'image/jpeg' });
+}
+
+export {initialValues, validationSchema,urlToFile}

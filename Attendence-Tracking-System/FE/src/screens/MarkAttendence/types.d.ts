@@ -1,5 +1,10 @@
 interface FormInitValueType{
     email : null | string
     name : null | string 
-    photo : null
+    photo : null | string
+}
+
+interface ResType{
+    success:boolean
+    message : string
 }

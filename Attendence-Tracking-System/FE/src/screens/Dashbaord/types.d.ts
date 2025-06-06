@@ -9,3 +9,15 @@ interface CardType{
 interface IsMarkAttendenceType{
    isMarkAttendence? : boolean 
 }
+
+interface SuccessDashboardDataType {
+  data : {
+    checkIn:number
+    checkOut:number
+    totalAttendee:number
+  }
+}
+
+interface SuccessObj{
+  success:boolean
+}

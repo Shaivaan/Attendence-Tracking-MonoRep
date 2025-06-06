@@ -2,21 +2,59 @@ import { memo, type FormEvent } from "react";
 import { Input } from "../../components/shad-cn/input";
 import { Button } from "../../components/shad-cn/button";
 import { FormikContext, useFormik, useFormikContext } from "formik";
-import { initialValues, validationSchema } from "./utils";
-import { cn } from "../../lib/utils";
+import { initialValues, urlToFile, validationSchema } from "./utils";
+import { base_url, cn, endpoints, getFormData, multipartHeader, routes } from "../../lib/utils";
 import HeadBack from "../../components/created/HeadBack";
 import SimpleCameraCapture from "../../components/created/CameraCapture";
+import axios from "axios";
+import { useToast } from "../../components/created/Toast";
+import useZustandStore from "../../zustand/store";
+import { LoaderCircle } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const MarkAttendenceForm = () => {
+  const {showToast} = useToast();
+  const {handleDashboardData,handleFormLoading} = useZustandStore();
+  const navigate = useNavigate();
   const formik = useFormik({
     initialValues,
     validationSchema,
     validateOnBlur: true,
     validateOnChange: true,
-    onSubmit: (value) => {
-      console.log(value);
+    onSubmit: async(value) => {
+      const photoFile = await urlToFile(value.photo as unknown as string,value.name as unknown as string + '.jpeg');
+      const data = {...value,photo:photoFile as unknown as string};
+      await formSubmitFunction(data)
     },
   });
+
+  const formSubmitFunction = async(value:FormInitValueType)=>{
+    handleFormLoading(true);
+    try{
+      const {data} = await axios.post(base_url + endpoints.form , getFormData(value), {
+      headers: multipartHeader
+      });
+      successHandler(data);
+    }catch(err){
+      const message = (err as any)?.response?.data?.message || 'Something Went Wrong';
+      showToast({message,variant:'error'});
+    }finally{
+      handleFormLoading(false);
+    }
+  }
+
+
+  const successHandler = (data : ResType)=>{
+      const message = data?.message;
+      let isSuccess = data.success;
+      showToast({message:message,variant:isSuccess ? 'success' : 'error'});
+      if(isSuccess) {
+        formik.resetForm();
+        navigate(routes.home);  
+        handleDashboardData({isLoadedOnce:false,isLoading:true});
+      }
+  }
+  
 
   return (
       <FormikContext.Provider value={formik}>
@@ -69,14 +107,16 @@ const FormTextFieldComp = ({
 
 const Submit = () => {
   const { handleSubmit } = useFormikContext();
+  const { formLoading } = useZustandStore();
   return (
     <Button
       type="submit"
       onClick={(event) => handleSubmit(event as unknown as FormEvent<HTMLFormElement>)}
       className="py-6 bg-[#2563EB] text-white hover:bg-[#2563EB] mt-4"
       variant={"outline"}
+      disabled={formLoading}
     >
-      Submit
+      {formLoading ? <LoaderCircle className="load-icon"/> : "Submit"}
     </Button>
   );
 };

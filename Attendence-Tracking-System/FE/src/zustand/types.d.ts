@@ -10,5 +10,8 @@ interface DashboardDataType {
 
 interface StoreType {
   dashboardData : DashboardDataType
-  handleDashboardData : (data : DashboardDataType)=>void
+  handleDashboardData : (data : Partial<DashboardDataType>)=>void
+
+  formLoading : boolean
+  handleFormLoading : (isLoading:boolean)=>void
 }

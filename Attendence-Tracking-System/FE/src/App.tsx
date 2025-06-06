@@ -8,7 +8,7 @@ import { Toaster } from 'sonner'
 
 function App() {
   return (
-    <div className='p-10 flex flex-col gap-15'>
+    <div className='p-10 flex flex-col gap-5'>
       <Header/>
       <Toaster/>
       <Router/>

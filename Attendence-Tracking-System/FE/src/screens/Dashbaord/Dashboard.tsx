@@ -1,12 +1,39 @@
-import { Calendar, Camera, CircleArrowOutDownLeft, CircleCheckBig, Users } from "lucide-react";
+import { Calendar, Camera, CircleArrowOutDownLeft, CircleCheckBig, LoaderCircle, Users } from "lucide-react";
 import Card from "../../components/created/Card";
-import { memo, useMemo } from "react";
+import { memo, useEffect, useMemo } from "react";
 import useZustandStore, { statsLabel } from "../../zustand/store";
-import { cn, routes } from "../../lib/utils";
+import { base_url, cn, endpoints, routes } from "../../lib/utils";
 import { Link } from "react-router-dom";
+import axios from "axios";
+import { useToast } from "../../components/created/Toast";
+
 
 const Dashboard = ()=>{
     const keys = Object.keys(statsLabel);
+    const {showToast} = useToast();
+    const {handleDashboardData,dashboardData:{isLoadedOnce}} = useZustandStore();
+
+    const getDashboardData = async() =>{
+        handleDashboardData({isLoading:true});
+        try{
+            const {data} = await axios.get(base_url + endpoints.dashboard);
+            handleSuccessSenario(data);
+        }catch(err){
+            showToast({message:'Something Went Wrong',variant:'error'});
+        }finally{
+            handleDashboardData({isLoading:false,isLoadedOnce:true});
+        }
+    }   
+
+    const handleSuccessSenario = (data : SuccessDashboardDataType & SuccessObj)=>{
+        const {data:{checkIn,checkOut,totalAttendee}} = data;
+        handleDashboardData({checkIn,checkOut,totalAttendee})
+    }
+
+    useEffect(()=>{
+        if(!isLoadedOnce) getDashboardData();
+    },[])
+
     return <div className= "grid lg:grid-cols-2 gap-10 md:grid-cols-1">
         {keys.map((stat)=> <Card className={cn(stat === keys[2] && 'lg:col-span-2')}><CountCard cardType={stat as unknown as keyof DashboardDataType}/></Card>)}
         <Card className="lg:col-span-2 bg-[#2563EB] pointer text-white pointer"><MarkAttendenceCard isMarkAttendence/></Card>
@@ -17,10 +44,11 @@ const Dashboard = ()=>{
 
 const CountCardComp=({cardType}:CountCardType)=>{
     const {dashboardData} = useZustandStore();
+    const isLoading = useMemo(()=>dashboardData.isLoading,[dashboardData.isLoading]);
     return <div className="flex gap-4 items-center">
         <CardIconHandler cardType={cardType}/>
         <div className="flex flex-col">
-            <div className="text-[1.2rem]">{dashboardData[cardType]}</div>
+            <div className="text-[1.2rem]">{!isLoading ? dashboardData[cardType] : <LoaderCircle className="load-icon"/>}</div>
             <div className="text-[1rem]">{statsLabel[cardType]}</div>
         </div>
     </div>

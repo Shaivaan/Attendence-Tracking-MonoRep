@@ -8,13 +8,16 @@ const statsLabel = {
 
 const useZustandStore = create<StoreType>()((set) => ({
   dashboardData: {
-    checkIn:0,
-    checkOut:0,
-    totalAttendee:0,
+    checkIn:null,
+    checkOut:null,
+    totalAttendee:null,
     isLoading:false,
     isLoadedOnce:false
   },
-  handleDashboardData : (data)=> set((state) => ({ dashboardData : {...state.dashboardData,...data}}))
+  handleDashboardData : (data)=> set((state) => ({ dashboardData : {...state.dashboardData,...data}})),
+
+  formLoading:false,
+  handleFormLoading: (isLoading:boolean)=> set(() => ({ formLoading : isLoading}))
 }));
 
 export {statsLabel};

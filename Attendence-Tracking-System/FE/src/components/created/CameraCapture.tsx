@@ -4,6 +4,7 @@ import { useToast } from "./Toast";
 import Webcam from "react-webcam";
 import { Button } from "../shad-cn/button";
 import { cn } from "../../lib/utils";
+import useZustandStore from "../../zustand/store";
 
 const videoConstraints = {
   width: 1280,
@@ -34,6 +35,7 @@ const CameraCapture = ({keyName}:{keyName:keyof FormInitValueType})=>{
   const {setFieldValue,values:{photo},touched,errors} = useFormikContext<FormInitValueType>();
   const error = touched[keyName] && errors[keyName];
   const errorMessage = touched[keyName] ? errors[keyName] : null;
+  const {formLoading} = useZustandStore();
 
   const capture = useCallback(() => {
     const imageSrc = (webcamRef as unknown as RefObject<Webcam>).current.getScreenshot();
@@ -74,11 +76,11 @@ useEffect(()=>{
     {errorMessage && <div className="text-[0.8rem] absolute text-destructive">{errorMessage + '*'}</div>}
     <div className="flex gap-5 items-center">
 
-      {photo && <Button className="w-full flex-1 mt-9 py-5.5" onClick={retry}>Retry</Button>}
+      {photo && <Button disabled={formLoading} className="w-full flex-1 mt-9 py-5.5" onClick={retry}>Retry</Button>}
 
       {!photo && <>
         <Button className="w-full flex-1 mt-9 py-5.5" onClick={startCamera}>{!isCameraOn ? 'Start' : 'Stop'} Camera</Button>
-        {isCameraOn && !photo && <Button className="w-full flex-1 mt-9 py-5.5 bg-green-500 text-white" onClick={capture}>Capture</Button>}
+        {isCameraOn && !photo && <Button disabled={formLoading} className="w-full flex-1 mt-9 py-5.5 bg-green-500 text-white" onClick={capture}>Capture</Button>}
       </>}
     </div>
 
