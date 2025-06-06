@@ -7,7 +7,12 @@ export const entryRecord = async (req: Request, res: Response): Promise<void> =>
   try {
     const { email, name } = req.body;
     const photoFile = req.file as Express.Multer.File;
-    const photoUrl = `${req.protocol}://${req.get('host')}/uploads/photos/${photoFile.filename}`;
+    
+    // OLD (file path):
+    // const photoUrl = `${req.protocol}://${req.get('host')}/uploads/photos/${photoFile.filename}`;
+    
+    // NEW (base64):
+    const photoUrl = `data:${photoFile.mimetype};base64,${photoFile.buffer.toString('base64')}`;
 
     const today = new Date();
     const startOfDay = new Date(today.getFullYear(), today.getMonth(), today.getDate());
@@ -22,7 +27,7 @@ export const entryRecord = async (req: Request, res: Response): Promise<void> =>
       const loginEntry = new EntrySchema({
         email: email.toLowerCase().trim(),
         name: name.trim(),
-        photo: `/uploads/photos/${photoFile.filename}`,
+        photo: photoUrl, // Store base64 instead of file path
         entryType: 'login'
       });
       
@@ -38,7 +43,7 @@ export const entryRecord = async (req: Request, res: Response): Promise<void> =>
       const logoutEntry = new EntrySchema({
         email: email.toLowerCase().trim(),
         name: name.trim(),
-        photo: `/uploads/photos/${photoFile.filename}`,
+        photo: photoUrl, // Store base64 instead of file path
         entryType: 'logout'
       });
       
@@ -51,8 +56,7 @@ export const entryRecord = async (req: Request, res: Response): Promise<void> =>
       });
       
     } else {
-      // THIRD CALL - TWO ENTRIES ALREADY EXIST
-      fs.unlinkSync(photoFile.path);
+      // No file cleanup needed anymore (no files on disk)
       res.status(400).json({
         success: false,
         message: 'User already checked out for the day'
@@ -60,7 +64,7 @@ export const entryRecord = async (req: Request, res: Response): Promise<void> =>
     }
 
   } catch (error: any) {
-    if (req.file && fs.existsSync(req.file.path)) fs.unlinkSync(req.file.path);
+    // No file cleanup needed anymore
     res.status(500).json({ success: false, message: 'Something went wrong' });
   }
 };
@@ -114,15 +118,10 @@ export const getAttendanceHistory = async (req: Request, res: Response): Promise
     const startOfDay = new Date(today.getFullYear(), today.getMonth(), today.getDate());
     const endOfDay = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1);
 
-    // Get all entries for today
     const todayEntries = await EntrySchema.find({
-      createdAt: {
-        $gte: startOfDay,
-        $lt: endOfDay
-      }
+      createdAt: { $gte: startOfDay, $lt: endOfDay }
     }).sort({ createdAt: -1 });
 
-    // Group entries by email
     const groupedEntries: { [key: string]: any } = {};
     
     todayEntries.forEach((entry: any) => {
@@ -140,17 +139,16 @@ export const getAttendanceHistory = async (req: Request, res: Response): Promise
       if (entry.entryType === 'login') {
         groupedEntries[email].checkIn = {
           time: entry.createdAt,
-          photo: `${req.protocol}://${req.get('host')}${entry.photo}`
+          photo: entry.photo // This is now base64 - no URL construction needed
         };
       } else if (entry.entryType === 'logout') {
         groupedEntries[email].checkout = {
-          time: entry.createdAt, // createdAt is the logout time
-          photo: `${req.protocol}://${req.get('host')}${entry.photo}`
+          time: entry.createdAt,
+          photo: entry.photo // This is now base64 - no URL construction needed
         };
       }
     });
 
-    // Convert to array
     const history = Object.values(groupedEntries);
 
     res.status(200).json({
