@@ -1,14 +1,18 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-  const useToggleTheme = () => {
-    const [isLightTheme,setIsLightTheme] = useState(false);
-    const toggleTheme = ()=>{
-        const newIsDark = !isLightTheme;
-        setIsLightTheme(newIsDark);
-        if (newIsDark) document.documentElement.classList.add('light'); 
-        else document.documentElement.classList.remove('light');
-    }
-    return {toggleTheme, isLightTheme};
-  };
+const themeKey = 'theme';
+const useToggleTheme = () => {
+  const [isLightTheme, setIsLightTheme] = useState(() => 
+    localStorage.getItem(themeKey) === 'light'
+  );
+
+  useEffect(() => {
+    document.documentElement.classList.toggle('light', isLightTheme);
+    localStorage.setItem(themeKey, isLightTheme ? 'light' : 'dark');
+  }, [isLightTheme]);
+
+  return { toggleTheme: () => setIsLightTheme(prev => !prev), isLightTheme };
+};
+
 
   export default useToggleTheme;
