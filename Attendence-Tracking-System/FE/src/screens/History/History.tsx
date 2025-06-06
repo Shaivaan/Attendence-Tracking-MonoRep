@@ -18,7 +18,7 @@ const History = ()=>{
             const {data} = await axios.get(base_url + endpoints.history);
             handleSuccess(data);
         }catch(err){
-            showToast({message:'Something Went Wrong!'});
+            showToast({message:'Something Went Wrong!',variant:'error'});
         }finally{
             handleHistoryData({isLoading:false,isLoadedOnce:true});
         }
