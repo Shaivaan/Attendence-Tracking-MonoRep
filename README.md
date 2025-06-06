@@ -34,14 +34,12 @@ docker run -p 5000:5000 attendance-backend
 
 ### 📦 Installation Locally
 Prerequisites
-
+git clone https://github.com/Shaivaan/Attendence-Tracking-MonoRep.git
 Node.js version 22
 Yarn package manager
 
-```
-git clone https://github.com/Shaivaan/Attendence-Tracking-MonoRep.git
-
 # Frontend Setup (React)
+```
 - cd /FE
 - yarn
 - yarn run dev
@@ -132,3 +130,16 @@ Test the following scenarios to ensure proper form validation:
 - Vercel deployment for backend and frontend with vercel.json
 - And more development guidance
 
+
+## ⚡ Optimizations & Future Enhancements
+
+### History Improvements
+- **Calendar Integration** - Add date picker in history section to view attendance records for any specific day
+- **Monthly/Weekly Views** - Calendar view to visualize attendance patterns
+
+### Verification
+- **Status Validation** - Ensure proper check-in/check-out sequence for each employee
+
+### Additional Optimizations
+- **Real-time Updates** - Live dashboard updates without page refresh
+- **Search Functionality** - Search employees by name or email in history
