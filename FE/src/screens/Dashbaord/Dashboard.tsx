@@ -1,4 +1,4 @@
-import { Calendar, Camera, CircleArrowOutDownLeft, CircleCheckBig, LoaderCircle, Users } from "lucide-react";
+import { Calendar, Camera, CircleArrowOutDownLeft, CircleCheckBig, LoaderCircle, RefreshCcw, Users } from "lucide-react";
 import Card from "../../components/created/Card";
 import { memo, useEffect, useMemo } from "react";
 import useZustandStore, { statsLabel } from "../../zustand/store";
@@ -6,6 +6,8 @@ import { base_url, cn, endpoints, routes } from "../../lib/utils";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { useToast } from "../../components/created/Toast";
+import { Button } from "../../components/shad-cn/button";
+import HeadBack from "../../components/created/HeadBack";
 
 
 const Dashboard = ()=>{
@@ -34,11 +36,15 @@ const Dashboard = ()=>{
         if(!isLoadedOnce) getDashboardData();
     },[])
 
-    return <div className= "grid lg:grid-cols-2 gap-10 md:grid-cols-1">
+    return <div>
+    <HeadBack heading="Dashboard" shouldNavigateBack={false}/>
+    <div className= "grid lg:grid-cols-2 gap-10 md:grid-cols-1 relative">
+        <Button onClick={getDashboardData} variant={'ghost'} className="absolute top-[-45px] right-0"><RefreshCcw className="size-[1.5rem]"/></Button>
         {keys.map((stat)=> <Card key={stat} className={cn(stat === keys[2] && 'lg:col-span-2')}><CountCard cardType={stat as unknown as keyof DashboardDataType}/></Card>)}
         <Card className="lg:col-span-2 bg-[#2563EB] pointer text-white pointer"><MarkAttendenceCard isMarkAttendence/></Card>
         <Card className="lg:col-span-2"><MarkAttendenceCard/></Card>
     </div>;
+    </div>
 }
 
 

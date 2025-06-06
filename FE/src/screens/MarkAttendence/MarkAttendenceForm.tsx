@@ -57,9 +57,9 @@ const MarkAttendenceForm = () => {
   }
   
 
-  return (
+  return (<div>
+      <HeadBack heading="Attendence Marking Form"/>
       <FormikContext.Provider value={formik}>
-        <HeadBack heading="Attendence Marking Form"/>
         <div className="rounded-[var(--radius)] bg-[var(--card-bg)] card  p-10 flex gap-10">
           <div className=" flex flex-col gap-5 flex-1">
               <FormTextField keyName="name" />
@@ -70,6 +70,7 @@ const MarkAttendenceForm = () => {
 
         </div>
     </FormikContext.Provider>
+  </div>
   );
 };
 
