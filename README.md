@@ -6,12 +6,39 @@ A daily attendance tracking system that records employee check-ins and check-out
 - FE - https://attendence-tracking-fe.vercel.app/
 - BE - https://attendence-tracking-be.vercel.app/
 
-### 📦 Installation
+
+
+## 🐳 Installation - Docker Setup
+
+### Run with Docker Compose (Recommended)
+```bash
+# Clone the repository
+git clone <repository-url>
+cd <repository-name>
+
+# Run the entire application
+docker-compose up --build
+```
+
+```
+bash# Frontend only
+cd FE
+docker build -t attendance-frontend .
+docker run -p 3000:3000 attendance-frontend
+
+# Backend only  
+cd BE
+docker build -t attendance-backend .
+docker run -p 5000:5000 attendance-backend
+```
+
+### 📦 Installation Locally
 Prerequisites
 
 Node.js version 22
 Yarn package manager
 
+```
 git clone https://github.com/Shaivaan/Attendence-Tracking-MonoRep.git
 
 # Frontend Setup (React)
@@ -19,11 +46,15 @@ git clone https://github.com/Shaivaan/Attendence-Tracking-MonoRep.git
 - yarn
 - yarn run dev
 
+
 # Environment Variables:
 - Create a .env file in the FE directory:
 - env : VITE_API_BASEURL=https://attendence-tracking-be.vercel.app/
+```
+
 
 # Backend Setup (Node.js)
+```
 - cd /BE
 - yarn
 - yarn run dev
@@ -33,6 +64,8 @@ git clone https://github.com/Shaivaan/Attendence-Tracking-MonoRep.git
 - env: MONGODB_UR=your_mongodb_connection_string
 - NODE_ENV=development
 - PORT=3000
+
+```
 
 ## 🎯 Features
 
