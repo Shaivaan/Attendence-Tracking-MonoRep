@@ -1,5 +1,4 @@
 import { Request, Response } from 'express';
-import fs from 'fs';
 import { EntrySchema } from '../model/entrySchema';
 import { statusMessage } from './utils';
 
@@ -8,10 +7,7 @@ export const entryRecord = async (req: Request, res: Response): Promise<void> =>
     const { email, name } = req.body;
     const photoFile = req.file as Express.Multer.File;
     
-    // OLD (file path):
-    // const photoUrl = `${req.protocol}://${req.get('host')}/uploads/photos/${photoFile.filename}`;
-    
-    // NEW (base64):
+   
     const photoUrl = `data:${photoFile.mimetype};base64,${photoFile.buffer.toString('base64')}`;
 
     const today = new Date();
@@ -27,7 +23,7 @@ export const entryRecord = async (req: Request, res: Response): Promise<void> =>
       const loginEntry = new EntrySchema({
         email: email.toLowerCase().trim(),
         name: name.trim(),
-        photo: photoUrl, // Store base64 instead of file path
+        photo: photoUrl, 
         entryType: 'login'
       });
       
@@ -43,7 +39,7 @@ export const entryRecord = async (req: Request, res: Response): Promise<void> =>
       const logoutEntry = new EntrySchema({
         email: email.toLowerCase().trim(),
         name: name.trim(),
-        photo: photoUrl, // Store base64 instead of file path
+        photo: photoUrl, 
         entryType: 'logout'
       });
       
@@ -56,15 +52,13 @@ export const entryRecord = async (req: Request, res: Response): Promise<void> =>
       });
       
     } else {
-      // No file cleanup needed anymore (no files on disk)
       res.status(400).json({
         success: false,
         message: 'User already checked out for the day'
       });
     }
 
-  } catch (error: any) {
-    // No file cleanup needed anymore
+  } catch (error: any) {    
     res.status(500).json({ success: false, message: 'Something went wrong' });
   }
 };
@@ -83,22 +77,22 @@ export const getDashboardStats = async (req: Request, res: Response): Promise<vo
       }
     });
 
-    // Count login entries for today
+    
     const checkIn = todayEntries.filter((entry) => entry.entryType === 'login').length;
     
-    // Count logout entries for today
+    
     const checkOut = todayEntries.filter(entry => entry.entryType === 'logout').length;
     
-    // Count unique emails for today
+    
     const uniqueEmails = [...new Set(todayEntries.map(entry => entry.email))];
     const totalAttendee = uniqueEmails.length;
 
     res.status(200).json({
       success: true,
       data: {
-        checkIn,      // Total login entries today
-        checkOut,     // Total logout entries today  
-        totalAttendee // Unique emails today
+        checkIn,     
+        checkOut,    
+        totalAttendee
       }
     });
 
