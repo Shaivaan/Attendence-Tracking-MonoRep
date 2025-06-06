@@ -5,6 +5,7 @@ import Dashboard from './screens/Dashbaord/Dashboard'
 import Header from './components/created/Header'
 import MarkAttendenceForm from './screens/MarkAttendence/MarkAttendenceForm'
 import { Toaster } from 'sonner'
+import History from './screens/History/History'
 
 function App() {
   return (
@@ -21,6 +22,7 @@ const Router=()=>{
   return <Routes>
         <Route path='/' element={<Dashboard />}/>
         <Route path='/mark' element={<MarkAttendenceForm/>}/>
+        <Route path='/history' element={<History/>}/>
         <Route path='*' element={<RandomRoute/>}/>
       </Routes>
 }

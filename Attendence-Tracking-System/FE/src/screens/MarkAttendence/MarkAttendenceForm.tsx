@@ -14,7 +14,7 @@ import { useNavigate } from "react-router-dom";
 
 const MarkAttendenceForm = () => {
   const {showToast} = useToast();
-  const {handleDashboardData,handleFormLoading} = useZustandStore();
+  const {handleDashboardData,handleFormLoading,handleHistoryData} = useZustandStore();
   const navigate = useNavigate();
   const formik = useFormik({
     initialValues,
@@ -52,6 +52,7 @@ const MarkAttendenceForm = () => {
         formik.resetForm();
         navigate(routes.home);  
         handleDashboardData({isLoadedOnce:false,isLoading:true});
+        handleHistoryData({isLoadedOnce:false,isLoading:true})
       }
   }
   

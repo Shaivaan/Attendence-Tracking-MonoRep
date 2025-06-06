@@ -17,7 +17,14 @@ const useZustandStore = create<StoreType>()((set) => ({
   handleDashboardData : (data)=> set((state) => ({ dashboardData : {...state.dashboardData,...data}})),
 
   formLoading:false,
-  handleFormLoading: (isLoading:boolean)=> set(() => ({ formLoading : isLoading}))
+  handleFormLoading: (isLoading:boolean)=> set(() => ({ formLoading : isLoading})),
+
+  historyData:{
+    data:[],
+    isLoadedOnce:false,
+    isLoading:false
+  },
+  handleHistoryData : (data)=> set((state) => ({ historyData : {...state.historyData,...data}})),
 }));
 
 export {statsLabel};

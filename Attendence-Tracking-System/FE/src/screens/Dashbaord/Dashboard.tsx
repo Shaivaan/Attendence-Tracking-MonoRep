@@ -35,7 +35,7 @@ const Dashboard = ()=>{
     },[])
 
     return <div className= "grid lg:grid-cols-2 gap-10 md:grid-cols-1">
-        {keys.map((stat)=> <Card className={cn(stat === keys[2] && 'lg:col-span-2')}><CountCard cardType={stat as unknown as keyof DashboardDataType}/></Card>)}
+        {keys.map((stat)=> <Card key={stat} className={cn(stat === keys[2] && 'lg:col-span-2')}><CountCard cardType={stat as unknown as keyof DashboardDataType}/></Card>)}
         <Card className="lg:col-span-2 bg-[#2563EB] pointer text-white pointer"><MarkAttendenceCard isMarkAttendence/></Card>
         <Card className="lg:col-span-2"><MarkAttendenceCard/></Card>
     </div>;
@@ -66,7 +66,7 @@ const CardIconHandler=({cardType}:CountCardType)=>{
 const MarkAttendenceCard=({isMarkAttendence=false}:IsMarkAttendenceType)=>{
     const label1 = useMemo(()=>isMarkAttendence ? 'Mark Attendence' : 'View History',[isMarkAttendence]);
     const label2 = useMemo(()=>isMarkAttendence ? 'Capture photo and record entry/exit' : 'Check attendence records',[isMarkAttendence]);
-    const navigateLink = useMemo(()=>isMarkAttendence ? routes.mark : null,[isMarkAttendence]);
+    const navigateLink = useMemo(()=>isMarkAttendence ? routes.mark : routes.history,[isMarkAttendence]);
     return <Link to={navigateLink as string} >
         <div className="w-full flex flex-col gap-2 items-center">
             {isMarkAttendence ? <Camera className="size-10"/> : <Calendar className="size-10"/>}

@@ -8,7 +8,8 @@ export function cn(...inputs: ClassValue[]) {
 
 export const routes = {
   home : '/',
-  mark : '/mark'
+  mark : '/mark',
+  history : '/history'
 };
 
 export const base_url = import.meta.env.VITE_API_BASEURL;
@@ -16,6 +17,7 @@ export const base_url = import.meta.env.VITE_API_BASEURL;
 export const endpoints = {
   form : 'entry',
   dashboard : 'entry/dashboard',
+  history : 'entry/history'
 }
 
 export const multipartHeader = {
