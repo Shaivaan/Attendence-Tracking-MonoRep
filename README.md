@@ -12,8 +12,10 @@ Prerequisites
 Node.js version 22
 Yarn package manager
 
-Frontend Setup (React)
-- bashcd FE
+git clone https://github.com/Shaivaan/Attendence-Tracking-MonoRep.git
+
+# Frontend Setup (React)
+- cd /FE
 - yarn
 - yarn run dev
 
@@ -22,7 +24,7 @@ Frontend Setup (React)
 - env : VITE_API_BASEURL=https://attendence-tracking-be.vercel.app/
 
 # Backend Setup (Node.js)
-- bashcd BE
+- cd /BE
 - yarn
 - yarn run dev
 
