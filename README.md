@@ -2,6 +2,10 @@
 
 A daily attendance tracking system that records employee check-ins and check-outs for the present day.
 
+### Deploys
+- FE - https://attendence-tracking-fe.vercel.app/
+- BE - https://attendence-tracking-be.vercel.app/
+
 ### 📦 Installation
 Prerequisites
 
